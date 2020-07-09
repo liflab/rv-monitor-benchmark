@@ -1,0 +1,42 @@
+<p>This lab compares various runtime monitors on event traces.</p>
+
+<h2>Monitors included</h2>
+
+<ul>
+<li><a href="https://beepbeep.sourceforge.net/">BeepBeep 1.7.8</a>, a monitor for
+LTL-FO+ formulas on XML events.</li>
+<li><a href="https://liflab.github.io/beepbeep-3">BeepBeep 3 (v0.10.3)</a>, a
+general-purpose event stream processing library and the successor to BeepBeep 1.</li>
+</ul>
+
+<h2>Scenarios</h2>
+
+<p>The lab is composed of a number of <em>scenarios</em>, which are basic
+experimental units made of:</p>
+
+<ul>
+<li>A trace of events representing a particular use case</li>
+<li>A property to evaluate on this trace of events</li>
+</ul>
+
+<p>For a given scenario and a given tool, the lab provides the specification
+corresponding to the property to evaluate in the input notation/language of the
+tool, and optionally a conversion function to turn events of the input trace into
+data structures in the format accepted by the tool in question.</p>
+
+<h2>Measurements</h2>
+
+<p>For each scenario and each monitor, the lab performs the following measurements:</p>
+
+<ul>
+<li>The maximum memory consumption used by the monitor</li>
+<li>The total evaluation time</li>
+</ul>
+
+<p>It also measures the memory consumption and running time at periodical intervals
+during the evaluation. From these measurements, the lab produces:</p>
+
+<ul>
+<li>A cumulative table of the running time/memory consumption of each monitor on each scenario</li>
+<li>Line plots of running time/memory for each scenario</li>
+</ul>
