@@ -33,7 +33,7 @@ public class FileLineSource<T> extends LineSource<T>
 	 * The path to read the lines from
 	 */
 	protected String m_path;
-	
+
 	/**
 	 * Creates a new internal line source.
 	 * @param path The path to read the lines from
@@ -44,7 +44,7 @@ public class FileLineSource<T> extends LineSource<T>
 		super(null, converter);
 		m_path = path;
 	}
-	
+
 	/**
 	 * Creates a new file line source.
 	 * @param path The path to read the lines from
@@ -56,10 +56,29 @@ public class FileLineSource<T> extends LineSource<T>
 		super(null, converter, num_lines);
 		m_path = path;
 	}
-	
+
 	@Override
 	public void open() throws SourceException
 	{
+		if (m_lineCount <= 0)
+		{
+			try
+			{
+				m_scanner = new Scanner(new FileInputStream(new File(m_path)));
+			}
+			catch (FileNotFoundException e)
+			{
+				throw new SourceException(e);
+			}
+			int line_count = 0;
+			while (m_scanner.hasNextLine())
+			{
+				m_scanner.nextLine();
+				line_count++;
+			}
+			m_lineCount = line_count;
+			m_scanner.close();
+		}
 		try
 		{
 			m_scanner = new Scanner(new FileInputStream(new File(m_path)));
@@ -69,7 +88,7 @@ public class FileLineSource<T> extends LineSource<T>
 			throw new SourceException(e);
 		}
 	}
-	
+
 	@Override
 	public void close() throws SourceException
 	{

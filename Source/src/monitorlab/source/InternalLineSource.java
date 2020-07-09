@@ -61,6 +61,19 @@ public class InternalLineSource<T> extends LineSource<T>
 	public void open() throws SourceException
 	{
 		InputStream is = MonitorLab.class.getResourceAsStream(m_path);
+		if (m_lineCount <= 0)
+		{
+			m_scanner = new Scanner(is);
+			int line_count = 0;
+			while (m_scanner.hasNextLine())
+			{
+				m_scanner.nextLine();
+				line_count++;
+			}
+			m_lineCount = line_count;
+			m_scanner.close();
+		}
+		is = MonitorLab.class.getResourceAsStream(m_path);
 		m_scanner = new Scanner(is);
 	}
 	

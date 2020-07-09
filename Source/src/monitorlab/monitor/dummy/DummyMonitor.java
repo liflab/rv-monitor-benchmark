@@ -35,7 +35,7 @@ public class DummyMonitor<T> implements Monitor<T>
 	 * The name of the underlying tool for this monitor
 	 */
 	public static final transient String TOOL_NAME = "Dummy";
-	
+
 	/**
 	 * Creates a new instance of dummy monitor
 	 */
@@ -43,18 +43,21 @@ public class DummyMonitor<T> implements Monitor<T>
 	{
 		super();
 	}
-	
+
 	@Override
 	public void feed(T event) throws MonitorException
 	{
 		// Wait a few milliseconds to look like we're doing something
-		try
+		if (Math.random() < 0.25)
 		{
-			Thread.sleep(1);
-		}
-		catch (InterruptedException e)
-		{
-			// Don't care
+			try
+			{
+				Thread.sleep(1);
+			}
+			catch (InterruptedException e)
+			{
+				// Don't care
+			}
 		}
 	}
 

@@ -56,7 +56,7 @@ public abstract class HasNextScenario extends Scenario<String>
 		}
 		if (tool_name.compareTo(BeepBeep1Monitor.TOOL_NAME) == 0)
 		{
-			monitor = new ConvertedMonitor<Event,String>(new HasNextMonitor(), StringToAtom.instance);
+			monitor = new ConvertedMonitor<Event,String>(new HasNextMonitor(), new StringToAtom().add("next").add("hasNext"));
 		}
 		if (tool_name.compareTo(BeepBeep3Monitor.TOOL_NAME) == 0)
 		{

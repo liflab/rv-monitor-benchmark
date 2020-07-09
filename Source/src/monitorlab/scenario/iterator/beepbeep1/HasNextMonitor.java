@@ -22,7 +22,7 @@ import ca.uqac.info.ltl.OperatorG;
 import ca.uqac.info.ltl.OperatorImplies;
 import ca.uqac.info.ltl.OperatorX;
 import ca.uqac.info.monitor.Monitor;
-import ca.uqac.info.monitor.MonitorFactory;
+import monitorlab.monitor.beepbeep1.AtomicMonitorFactory;
 import monitorlab.monitor.beepbeep1.BeepBeep1Monitor;
 
 /**
@@ -52,7 +52,7 @@ public class HasNextMonitor extends BeepBeep1Monitor
 		OperatorX x = new OperatorX();
 		imp.setRight(x);
 		x.setOperand(new Atom("hasNext"));
-		MonitorFactory mf = new MonitorFactory();
+		AtomicMonitorFactory mf = new AtomicMonitorFactory();
 		g.accept(mf);
 		return mf.getMonitor();
 	}

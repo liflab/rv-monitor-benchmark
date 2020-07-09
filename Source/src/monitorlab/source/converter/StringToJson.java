@@ -58,5 +58,4 @@ public class StringToJson implements LineConverter<JsonElement>
 			throw new SourceException(e);
 		}
 	}
-
 }
