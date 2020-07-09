@@ -47,7 +47,7 @@ public class StringToJson implements LineConverter<JsonElement>
 	}
 	
 	@Override
-	public JsonElement getEvent(String line) throws SourceException
+	public JsonElement convert(String line) throws SourceException
 	{
 		try
 		{

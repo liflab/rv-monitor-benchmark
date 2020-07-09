@@ -38,7 +38,7 @@ public class CsvToArray implements LineConverter<Object[]>
 	}
 	
 	@Override
-	public Object[] getEvent(String line)
+	public Object[] convert(String line)
 	{
 		String[] parts = line.split(",");
 		Object[] array = new Object[parts.length];

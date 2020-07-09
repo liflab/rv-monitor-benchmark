@@ -33,7 +33,7 @@
   <author>Rania Taleb, Sylvain Hallé</author>
   
   <!-- The project's main class -->
-  <mainclass>propmanlab.MyLaboratory</mainclass>
+  <mainclass>monitorlab.MonitorLab</mainclass>
   
   <!-- Output jar -->
   <jar>
@@ -66,7 +66,18 @@
     </dependency>
     <dependency>
       <!--
-      BeepBeep core
+      BeepBeep 1.x core
+      -->
+      <name>BeepBeep</name>
+      <bundle>true</bundle>
+      <classname>ca.uqac.info.monitor.Monitor</classname>
+      <files>
+        <zip>https://downloads.sourceforge.net/project/beepbeep/beepbeep/1.7.8/beepbeep-1.7.8.zip</zip>
+      </files>
+    </dependency>
+    <dependency>
+      <!--
+      BeepBeep 3 core
       -->
       <name>BeepBeep</name>
       <bundle>true</bundle>

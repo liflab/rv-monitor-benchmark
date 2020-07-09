@@ -15,80 +15,75 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monitorlab.monitor.beepbeep3;
+package monitorlab.monitor.beepbeep1;
 
+import ca.uqac.info.monitor.Event;
+import ca.uqac.info.monitor.Monitor.Verdict;
 import ca.uqac.lif.azrael.PrintException;
 import ca.uqac.lif.azrael.size.SizePrinter;
-import ca.uqac.lif.cep.Connector;
-import ca.uqac.lif.cep.Processor;
-import ca.uqac.lif.cep.Pushable;
 import ca.uqac.lif.cep.ltl.Troolean;
-import ca.uqac.lif.cep.tmf.SinkLast;
+import ca.uqac.lif.cep.ltl.Troolean.Value;
 import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorException;
 
 /**
- * A monitor using <a href="https://liflab.github.io/beepbeep-3">BeepBeep 3</a>
- * processor chains.
- *
- * @param <T> The type of the input events
+ * A monitor using <a href="https://beepbeep.sourceforge.net/">BeepBeep 1</a>
+ * to evaluate LTL-FO+ formulas.
  */
-public class BeepBeepMonitor<T> implements Monitor<T>
+public class BeepBeep1Monitor implements Monitor<Event>
 {
 	/**
 	 * The name of the underlying tool for this monitor
 	 */
-	public static final transient String TOOL_NAME = "BeepBeep 3";
+	public static final transient String TOOL_NAME = "BeepBeep 1";
 	
 	/**
-	 * The BeepBeep processor to be used as the monitor
+	 * The monitor corresponding to the formula to evaluate
 	 */
-	protected Processor m_processor;
+	protected ca.uqac.info.monitor.Monitor m_monitor;
 	
 	/**
-	 * A pushable to feed events to the monitor
-	 */
-	protected Pushable m_pushable;
-	
-	/**
-	 * The sink where events will be pushed
-	 */
-	protected SinkLast m_sink;
-	
-  /**
    * An Azrael printer used to evaluate memory usage
    */
   protected transient SizePrinter m_sizePrinter;
   
   /**
    * Creates a new BeepBeep monitor
-   * @param p The processor chain to be evaluated
+   * @param m The monitor to be evaluated
    */
-  public BeepBeepMonitor(Processor p)
+  public BeepBeep1Monitor(ca.uqac.info.monitor.Monitor m)
   {
   	super();
-  	m_processor = p;
-  	m_pushable = p.getPushableInput();
-  	m_sink = new SinkLast();
-  	Connector.connect(m_processor, m_sink);
+  	m_monitor = m;
   	m_sizePrinter = new SizePrinter();
   }
 
 	@Override
-	public void feed(T event) throws MonitorException
+	public void feed(Event event) throws MonitorException
 	{
-		m_pushable.push(event);
+		try
+		{
+			m_monitor.processEvent(event);
+		}
+		catch (ca.uqac.info.monitor.MonitorException e)
+		{
+			throw new MonitorException(e);
+		}
 	}
 
 	@Override
-	public Troolean.Value getVerdict() throws MonitorException
+	public Value getVerdict() throws MonitorException
 	{
-		Object[] o = m_sink.getLast();
-		if (o == null)
+		Verdict v = m_monitor.getVerdict();
+		if (v == Verdict.FALSE)
 		{
-			return null;
+			return Troolean.Value.FALSE;
 		}
-		return (Troolean.Value) o[0];
+		if (v == Verdict.TRUE)
+		{
+			return Troolean.Value.TRUE;
+		}
+		return Troolean.Value.INCONCLUSIVE;
 	}
 
 	@Override
@@ -97,7 +92,7 @@ public class BeepBeepMonitor<T> implements Monitor<T>
 		m_sizePrinter.reset();
 		try
 		{
-			return m_sizePrinter.print(m_processor).longValue();
+			return m_sizePrinter.print(m_monitor).longValue();
 		}
 		catch (PrintException e)
 		{

@@ -18,12 +18,7 @@
 package monitorlab.scenario.iterator;
 
 import ca.uqac.lif.labpal.Region;
-import monitorlab.Scenario;
-import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorExperiment;
-import monitorlab.monitor.beepbeep3.BeepBeepMonitor;
-import monitorlab.monitor.dummy.DummyMonitor;
-import monitorlab.scenario.iterator.beepbeep3.HasNextProcessor;
 import monitorlab.source.PullSource;
 import monitorlab.source.converter.Identity;
 
@@ -32,7 +27,7 @@ import monitorlab.source.converter.Identity;
  * always followed by <tt>hasNext</tt>. The source of events in this scenario
  * is an internal pre-recorded text file.
  */
-public class HasNextFile extends Scenario<String>
+public class HasNextFile extends HasNextScenario
 {
 	/**
 	 * The name of this scenario
@@ -54,31 +49,5 @@ public class HasNextFile extends Scenario<String>
 		IteratorFileSource source = new IteratorFileSource(Identity.instance);
 		e.setSource(source);
 		return source;
-	}
-
-	@Override
-	public Monitor<String> getMonitor(MonitorExperiment<String> e, Region r)
-	{
-		Monitor<String> monitor = null;
-		String tool_name = r.getString(MonitorExperiment.TOOL);
-		if (tool_name == null)
-		{
-			return null;
-		}
-		if (tool_name.compareTo(DummyMonitor.TOOL_NAME) == 0)
-		{
-			monitor = new DummyMonitor<String>();
-		}
-		if (tool_name.compareTo(BeepBeepMonitor.TOOL_NAME) == 0)
-		{
-			monitor = new BeepBeepMonitor<String>(new HasNextProcessor());
-		}
-		if (monitor != null)
-		{
-			e.setMonitor(monitor);
-			e.setInput(MonitorExperiment.TOOL, tool_name);
-			return monitor;
-		}
-		return null;
 	}
 }

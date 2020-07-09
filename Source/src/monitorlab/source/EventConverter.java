@@ -15,31 +15,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monitorlab.source.converter;
-
-import monitorlab.source.LineConverter;
+package monitorlab.source;
 
 /**
- * Converts a line of text into itself.
+ * Interface allowing events from different inputs to be converted
+ *
+ * @param <T> The input type
+ * @param <U> The output type
  */
-public class Identity implements LineConverter<String>
+public interface EventConverter<T,U>
 {
 	/**
-	 * Reference to a single public instance of the converter.
+	 * Converts an event into another event
+	 * @param e The input event
+	 * @return The output event
+	 * @throws SourceException If the conversion cannot proceed
 	 */
-	public static final transient Identity instance = new Identity();
-	
-	/**
-	 * Creates a new instance of the converter
-	 */
-	protected Identity()
-	{
-		super();
-	}
-	
-	@Override
-	public String convert(String line)
-	{
-		return line;
-	}
+	public U convert(T e) throws SourceException;
 }

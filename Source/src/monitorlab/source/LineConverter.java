@@ -21,13 +21,7 @@ package monitorlab.source;
  * Converts a line of text from a source of events into an event of a
  * specific type <tt>T</tt>.
  */
-public interface LineConverter<T>
+public interface LineConverter<T> extends EventConverter<String,T>
 {
-	/**
-	 * Converts a line of text into an event
-	 * @param line The line of text
-	 * @return The event
-	 * @throws SourceException If no event can be produced from the line
-	 */
-	public T getEvent(String line) throws SourceException;
+	
 }

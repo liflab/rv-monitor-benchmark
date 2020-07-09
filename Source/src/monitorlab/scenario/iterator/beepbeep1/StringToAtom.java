@@ -15,31 +15,32 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monitorlab.source.converter;
+package monitorlab.scenario.iterator.beepbeep1;
 
-import monitorlab.source.LineConverter;
+import ca.uqac.info.monitor.Event;
+import monitorlab.source.EventConverter;
+import monitorlab.source.SourceException;
 
-/**
- * Converts a line of text into itself.
- */
-public class Identity implements LineConverter<String>
+public class StringToAtom implements EventConverter<String,Event>
 {
 	/**
 	 * Reference to a single public instance of the converter.
 	 */
-	public static final transient Identity instance = new Identity();
-	
+	public static final transient StringToAtom instance = new StringToAtom();
+
 	/**
 	 * Creates a new instance of the converter
 	 */
-	protected Identity()
+	protected StringToAtom()
 	{
 		super();
 	}
 	
 	@Override
-	public String convert(String line)
+	public Event convert(String e) throws SourceException
 	{
-		return line;
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

@@ -27,7 +27,7 @@ import ca.uqac.lif.mtnp.table.TransformedTable;
 import ca.uqac.lif.synthia.random.RandomBoolean;
 import ca.uqac.lif.synthia.random.RandomFloat;
 import monitorlab.monitor.MonitorExperiment;
-import monitorlab.monitor.beepbeep3.BeepBeepMonitor;
+import monitorlab.monitor.beepbeep3.BeepBeep3Monitor;
 import monitorlab.monitor.dummy.DummyMonitor;
 import monitorlab.scenario.iterator.HasNextFile;
 import monitorlab.scenario.iterator.HasNextRandom;
@@ -89,7 +89,7 @@ public class MonitorLab extends Laboratory
 		// Adding scenarios and monitors
 		Region big_r = new Region();
     big_r.add(SCENARIO, HasNextFile.NAME, HasNextRandom.NAME);
-    big_r.add(TOOL, DummyMonitor.TOOL_NAME, BeepBeepMonitor.TOOL_NAME);
+    big_r.add(TOOL, DummyMonitor.TOOL_NAME, BeepBeep3Monitor.TOOL_NAME);
     
     // Comparison of all tools on all scenarios
     {

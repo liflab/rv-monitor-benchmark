@@ -74,7 +74,7 @@ public abstract class LineSource<T> implements PullSource<T>
 		{
 			throw new SourceException("No more lines in the source");
 		}
-		return m_converter.getEvent(m_scanner.nextLine());
+		return m_converter.convert(m_scanner.nextLine());
 	}
 
 	@Override
