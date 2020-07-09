@@ -32,47 +32,47 @@ public class MonitorExperiment<T> extends Experiment
 	 * Name of the parameter "Tool"
 	 */
 	public static transient final String TOOL = "Tool";
-	
+
 	/**
 	 * Name of the parameter "Time"
 	 */
 	public static transient final String TIME = "Time";
-	
+
 	/**
 	 * Name of the parameter "Length"
 	 */
 	public static transient final String LENGTH = "Length";
-	
+
 	/**
 	 * Name of the parameter "Trace length"
 	 */
 	public static transient final String TRACE_LENGTH = "Trace length";
-	
+
 	/**
 	 * Name of the parameter "Query"
 	 */
 	public static transient final String PROPERTY = "Query";
-	
+
 	/**
 	 * Name of the parameter "Memory"
 	 */
 	public static transient final String MEMORY = "Memory";
-	
+
 	/**
 	 * Name of the parameter "Memory per event"
 	 */
 	public static transient final String MEM_PER_EVENT = "Memory per event";
-	
+
 	/**
 	 * Name of the parameter "Throughput"
 	 */
 	public static transient final String THROUGHPUT = "Throughput";
-	
+
 	/**
 	 * Name of the parameter "Max memory"
 	 */
 	public static transient final String MAX_MEMORY = "Max memory";
-	
+
 	/**
 	 * Name of the parameter "Verdict"
 	 */
@@ -137,6 +137,8 @@ public class MonitorExperiment<T> extends Experiment
 		long max_mem = 0;
 		try
 		{
+			int source_length = m_source.getLength();
+			m_source.open();
 			while (m_source.hasNext())
 			{
 				event_count++;
@@ -147,17 +149,23 @@ public class MonitorExperiment<T> extends Experiment
 					long mem = m_monitor.getMemory();
 					max_mem = Math.max(max_mem, mem);
 					addReading(event_count, System.currentTimeMillis() - start, mem);
+					if (source_length > 0)
+					{
+						float prog = ((float) event_count) / ((float) source_length);
+						setProgression(prog);
+					}
 				}
 			}
 			long end = System.currentTimeMillis();
-	    write(THROUGHPUT, (1000f * (float) event_count) / ((float) (end - start)));
-	    write(MAX_MEMORY, max_mem);
-	    if (event_count > 0)
-	    {
-	    	write(MEM_PER_EVENT, max_mem / event_count);
-	    }
-	    write(TRACE_LENGTH, event_count);
-	    write(VERDICT, m_monitor.getVerdict().toString());
+			write(THROUGHPUT, (1000f * (float) event_count) / ((float) (end - start)));
+			write(MAX_MEMORY, max_mem);
+			if (event_count > 0)
+			{
+				write(MEM_PER_EVENT, max_mem / event_count);
+			}
+			write(TRACE_LENGTH, event_count);
+			write(VERDICT, m_monitor.getVerdict().toString());
+			m_source.close();
 		}
 		catch (MonitorException e)
 		{

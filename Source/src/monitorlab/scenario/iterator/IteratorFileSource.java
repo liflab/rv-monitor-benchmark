@@ -20,9 +20,17 @@ package monitorlab.scenario.iterator;
 import monitorlab.source.InternalLineSource;
 import monitorlab.source.LineConverter;
 
-public class IteratorSource extends InternalLineSource<String>
+/**
+ * A source of method names read from an internal text file.
+ */
+public class IteratorFileSource extends InternalLineSource<String>
 {
-	public IteratorSource(LineConverter<String> converter)
+	/**
+	 * Creates a new instance of the source.
+	 * @param converter The converter to turn text lines into events to be
+	 * consumed by a monitor
+	 */
+	public IteratorFileSource(LineConverter<String> converter)
 	{
 		super("/monitorlab/scenario/iterator/events.txt", converter);
 	}

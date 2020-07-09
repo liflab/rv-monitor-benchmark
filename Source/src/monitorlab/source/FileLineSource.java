@@ -58,40 +58,21 @@ public class FileLineSource<T> extends LineSource<T>
 	}
 	
 	@Override
-	public T pull() throws SourceException
+	public void open() throws SourceException
 	{
-		if (m_scanner == null)
+		try
 		{
-			try
-			{
-				m_scanner = new Scanner(new FileInputStream(new File(m_path)));
-			}
-			catch (FileNotFoundException e)
-			{
-				throw new SourceException(e);
-			}
+			m_scanner = new Scanner(new FileInputStream(new File(m_path)));
 		}
-		if (!m_scanner.hasNextLine())
+		catch (FileNotFoundException e)
 		{
-			throw new SourceException("No more lines in the source");
+			throw new SourceException(e);
 		}
-		return m_converter.getEvent(m_scanner.nextLine());
 	}
-
+	
 	@Override
-	public boolean hasNext() throws SourceException
+	public void close() throws SourceException
 	{
-		if (m_scanner == null)
-		{
-			try
-			{
-				m_scanner = new Scanner(new FileInputStream(new File(m_path)));
-			}
-			catch (FileNotFoundException e)
-			{
-				throw new SourceException(e);
-			}
-		}
-		return m_scanner.hasNextLine();
+		m_scanner.close();
 	}
 }

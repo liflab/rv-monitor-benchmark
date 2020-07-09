@@ -30,7 +30,7 @@ import ca.uqac.lif.cep.util.Booleans;
 import ca.uqac.lif.cep.util.Equals;
 
 /**
- * The BeepBeep processor chain for the {@link HasNext} scenario.
+ * The BeepBeep processor chain for the {@link HasNextFile} scenario.
  * @author Sylvain Hallé
  */
 public class HasNextProcessor extends GroupProcessor

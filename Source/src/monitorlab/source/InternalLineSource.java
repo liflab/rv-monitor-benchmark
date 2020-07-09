@@ -58,27 +58,15 @@ public class InternalLineSource<T> extends LineSource<T>
 	}
 	
 	@Override
-	public T pull() throws SourceException
+	public void open() throws SourceException
 	{
-		if (m_scanner == null)
-		{
-			m_scanner = new Scanner(MonitorLab.class.getResourceAsStream(m_path));
-		}
-		if (!m_scanner.hasNextLine())
-		{
-			throw new SourceException("No more lines in the source");
-		}
-		return m_converter.getEvent(m_scanner.nextLine());
+		InputStream is = MonitorLab.class.getResourceAsStream(m_path);
+		m_scanner = new Scanner(is);
 	}
-
+	
 	@Override
-	public boolean hasNext() throws SourceException
+	public void close() throws SourceException
 	{
-		if (m_scanner == null)
-		{
-			InputStream is = MonitorLab.class.getResourceAsStream(m_path);
-			m_scanner = new Scanner(is);
-		}
-		return m_scanner.hasNextLine();
+		m_scanner.close();
 	}
 }

@@ -28,7 +28,9 @@ import ca.uqac.lif.synthia.random.RandomBoolean;
 import ca.uqac.lif.synthia.random.RandomFloat;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.beepbeep3.BeepBeepMonitor;
-import monitorlab.scenario.iterator.HasNext;
+import monitorlab.monitor.dummy.DummyMonitor;
+import monitorlab.scenario.iterator.HasNextFile;
+import monitorlab.scenario.iterator.HasNextRandom;
 
 import static monitorlab.monitor.MonitorExperiment.MAX_MEMORY;
 import static monitorlab.monitor.MonitorExperiment.THROUGHPUT;
@@ -80,13 +82,14 @@ public class MonitorLab extends Laboratory
 
 		// Factory setup: adding scenarios
 		{
-			m_factory.addScenario(HasNext.NAME, new HasNext());
+			m_factory.addScenario(HasNextFile.NAME, new HasNextFile());
+			m_factory.addScenario(HasNextRandom.NAME, new HasNextRandom(random_float));
 		}
 		
 		// Adding scenarios and monitors
 		Region big_r = new Region();
-    big_r.add(SCENARIO, HasNext.NAME);
-    big_r.add(TOOL, BeepBeepMonitor.TOOL_NAME);
+    big_r.add(SCENARIO, HasNextFile.NAME, HasNextRandom.NAME);
+    big_r.add(TOOL, DummyMonitor.TOOL_NAME, BeepBeepMonitor.TOOL_NAME);
     
     // Comparison of all tools on all scenarios
     {

@@ -22,34 +22,36 @@ import monitorlab.Scenario;
 import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.beepbeep3.BeepBeepMonitor;
+import monitorlab.monitor.dummy.DummyMonitor;
 import monitorlab.scenario.iterator.beepbeep3.HasNextProcessor;
 import monitorlab.source.PullSource;
 import monitorlab.source.converter.Identity;
 
 /**
  * On a stream of method names, checks the property that <tt>next</tt> is
- * always followed by <tt>hasNext</tt>.
+ * always followed by <tt>hasNext</tt>. The source of events in this scenario
+ * is an internal pre-recorded text file.
  */
-public class HasNext extends Scenario<String>
+public class HasNextFile extends Scenario<String>
 {
 	/**
 	 * The name of this scenario
 	 */
-	public static transient String NAME = "HasNext";
+	public static transient String NAME = "HasNext (file)";
 	
 	/**
 	 * Creates a new instance of this scenario
 	 * @param monitor_name The name of the monitor used in the scenario
 	 */
-	public HasNext()
+	public HasNextFile()
 	{
-		super("Iterator", "", "HasNext");
+		super(NAME, "", "HasNext");
 	}
 
 	@Override
 	public PullSource<String> getSource(MonitorExperiment<String> e, Region r)
 	{
-		IteratorSource source = new IteratorSource(Identity.instance);
+		IteratorFileSource source = new IteratorFileSource(Identity.instance);
 		e.setSource(source);
 		return source;
 	}
@@ -62,6 +64,10 @@ public class HasNext extends Scenario<String>
 		if (tool_name == null)
 		{
 			return null;
+		}
+		if (tool_name.compareTo(DummyMonitor.TOOL_NAME) == 0)
+		{
+			monitor = new DummyMonitor<String>();
 		}
 		if (tool_name.compareTo(BeepBeepMonitor.TOOL_NAME) == 0)
 		{

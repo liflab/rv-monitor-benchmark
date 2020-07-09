@@ -43,6 +43,12 @@ public interface PullSource<T>
 	public int getLength() throws SourceException;
 	
 	/**
+	 * Opens and initializes the source.
+	 * @throws SourceException Thrown if the operation caused an error
+	 */
+	public void open() throws SourceException;
+	
+	/**
 	 * Closes the source.
 	 * @throws SourceException Thrown if the operation caused an error
 	 */
