@@ -18,15 +18,108 @@
 package monitorlab;
 
 import ca.uqac.lif.labpal.Laboratory;
+import ca.uqac.lif.labpal.LatexNamer;
+import ca.uqac.lif.labpal.Region;
+import ca.uqac.lif.labpal.TitleNamer;
+import ca.uqac.lif.labpal.table.ExperimentTable;
+import ca.uqac.lif.mtnp.table.ExpandAsColumns;
+import ca.uqac.lif.mtnp.table.TransformedTable;
+import ca.uqac.lif.synthia.random.RandomBoolean;
+import ca.uqac.lif.synthia.random.RandomFloat;
+import monitorlab.monitor.MonitorExperiment;
+import monitorlab.monitor.beepbeep3.BeepBeepMonitor;
+import monitorlab.scenario.iterator.HasNext;
 
+import static monitorlab.monitor.MonitorExperiment.MAX_MEMORY;
+import static monitorlab.monitor.MonitorExperiment.THROUGHPUT;
+import static monitorlab.monitor.MonitorExperiment.TOOL;
+import static monitorlab.Scenario.SCENARIO;
+
+/**
+ * A laboratory comparing the performance of various Java runtime monitors on
+ * different scenarios.
+ * 
+ * @author Sylvain Hallé
+ */
 public class MonitorLab extends Laboratory
 {
+	/**
+	 * The interval, in number of events, between updates of the experiment's
+	 * measurements
+	 */
+	public static int s_eventStep = 1000;
+
+	/**
+	 * A nicknamer
+	 */
+	public static transient LatexNamer s_nicknamer = new LatexNamer();
+
+	/**
+	 * A title namer
+	 */
+	public static transient TitleNamer s_titleNamer = new TitleNamer();
+
+	/**
+	 * An experiment factory
+	 */
+	public transient MonitorExperimentFactory m_factory = new MonitorExperimentFactory(this);
 
 	@Override
 	public void setup()
 	{
-		// TODO Auto-generated method stub
+		// Basic lab metadata
+		setTitle("Benchmark for runtime monitors");
+		setDoi("TODO");
+		setAuthor("Rania Taleb, Sylvain Hallé");
+
+		// Setup of RNGs for the random experiments
+		RandomFloat random_float = new RandomFloat();
+		random_float.setSeed(getRandomSeed());
+		RandomBoolean random_boolean = new RandomBoolean();
+		random_boolean.setSeed(getRandomSeed());
+
+		// Factory setup: adding scenarios
+		{
+			m_factory.addScenario(HasNext.NAME, new HasNext());
+		}
 		
+		// Adding scenarios and monitors
+		Region big_r = new Region();
+    big_r.add(SCENARIO, HasNext.NAME);
+    big_r.add(TOOL, BeepBeepMonitor.TOOL_NAME);
+    
+    // Comparison of all tools on all scenarios
+    {
+    	ExperimentTable t_throughput = new ExperimentTable(SCENARIO, TOOL, THROUGHPUT);
+    	t_throughput.setShowInList(false);
+    	add(t_throughput);
+    	ExperimentTable t_memory = new ExperimentTable(SCENARIO, TOOL, MAX_MEMORY);
+    	t_memory.setShowInList(false);
+    	add(t_memory);
+    	for (Region r_s : big_r.all(SCENARIO, TOOL))
+    	{
+    		MonitorExperiment<?> exp = m_factory.get(r_s);
+    		t_throughput.add(exp);
+    		t_memory.add(exp);
+    	}
+    	TransformedTable tt_throughput = new TransformedTable(new ExpandAsColumns(TOOL, THROUGHPUT), t_throughput);
+    	tt_throughput.setTitle("Throughput comparison");
+    	tt_throughput.setNickname("tThroughput");
+    	add(tt_throughput);
+    	TransformedTable tt_memory = new TransformedTable(new ExpandAsColumns(TOOL, MAX_MEMORY), t_memory);
+    	tt_memory.setTitle("Memory comparison");
+    	tt_memory.setNickname("tMemory");
+    	add(tt_memory);
+    }
 	}
 
+	/**
+	 * The main loop of the laboratory
+	 * @param args Command-line arguments
+	 */
+	public static void main(String[] args)
+	{
+		// Nothing else to do here
+		initialize(args, MonitorLab.class);
+	}
 }

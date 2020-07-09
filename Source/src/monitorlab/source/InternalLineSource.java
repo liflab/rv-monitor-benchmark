@@ -17,6 +17,7 @@
  */
 package monitorlab.source;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 import monitorlab.MonitorLab;
@@ -41,6 +42,7 @@ public class InternalLineSource<T> extends LineSource<T>
 	{
 		super(null, converter);
 		m_path = path;
+		m_converter = converter;
 	}
 	
 	/**
@@ -74,7 +76,8 @@ public class InternalLineSource<T> extends LineSource<T>
 	{
 		if (m_scanner == null)
 		{
-			m_scanner = new Scanner(MonitorLab.class.getResourceAsStream(m_path));
+			InputStream is = MonitorLab.class.getResourceAsStream(m_path);
+			m_scanner = new Scanner(is);
 		}
 		return m_scanner.hasNextLine();
 	}

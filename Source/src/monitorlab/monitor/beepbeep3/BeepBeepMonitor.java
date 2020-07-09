@@ -22,6 +22,7 @@ import ca.uqac.lif.azrael.size.SizePrinter;
 import ca.uqac.lif.cep.Connector;
 import ca.uqac.lif.cep.Processor;
 import ca.uqac.lif.cep.Pushable;
+import ca.uqac.lif.cep.ltl.Troolean;
 import ca.uqac.lif.cep.tmf.SinkLast;
 import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorException;
@@ -31,9 +32,8 @@ import monitorlab.monitor.MonitorException;
  * processor chains.
  *
  * @param <T> The type of the input events
- * @param <U> The type of the verdict returned by the monitor
  */
-public class BeepBeepMonitor<T,U> implements Monitor<T,U>
+public class BeepBeepMonitor<T> implements Monitor<T>
 {
 	/**
 	 * The name of the underlying tool for this monitor
@@ -80,16 +80,15 @@ public class BeepBeepMonitor<T,U> implements Monitor<T,U>
 		m_pushable.push(event);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public U getVerdict() throws MonitorException
+	public Troolean.Value getVerdict() throws MonitorException
 	{
 		Object[] o = m_sink.getLast();
 		if (o == null)
 		{
 			return null;
 		}
-		return (U) o[0];
+		return (Troolean.Value) o[0];
 	}
 
 	@Override

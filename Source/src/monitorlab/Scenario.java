@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monitorlab.scenario;
+package monitorlab;
 
 import ca.uqac.lif.labpal.Region;
 import monitorlab.monitor.Monitor;
@@ -23,12 +23,15 @@ import monitorlab.monitor.MonitorExperiment;
 import monitorlab.source.PullSource;
 
 /**
- * A triplet made of a source and a monitor, each with additional
- * parameters.
+ * A tuple made of a source and a property, each with
+ * additional parameters.
  * @author Sylvain Hallé
  */
-public abstract class Scenario<T,U>
+public abstract class Scenario<T>
 {
+	/**
+	 * Name of the parameter "Scenario"
+	 */
 	public static final transient String SCENARIO = "Scenario";
 
 	/**
@@ -42,11 +45,6 @@ public abstract class Scenario<T,U>
 	protected String m_sourceName;
 
 	/**
-	 * The name of the monitor
-	 */
-	protected String m_monitorName;
-	
-	/**
 	 * The name of the property to monitor
 	 */
 	protected String m_propertyName;
@@ -55,15 +53,13 @@ public abstract class Scenario<T,U>
 	 * Creates a new scenario.
 	 * @param name The name of the scenario
 	 * @param source_name The name of the source
-	 * @param monitor_name The name of the monitor
 	 * @param property_name The name of the property to monitor
 	 */
-	public Scenario(String name, String source_name, String monitor_name, String property_name)
+	public Scenario(String name, String source_name, String property_name)
 	{
 		super();
 		m_name = name;
 		m_sourceName = source_name;
-		m_monitorName = monitor_name;
 		m_propertyName = property_name;
 	}
 
@@ -73,7 +69,7 @@ public abstract class Scenario<T,U>
 	 * @param e The experiment
 	 * @param r A region describing the scenario
 	 */
-	public void setup(MonitorExperiment<T,U> e, Region r)
+	public void setup(MonitorExperiment<T> e, Region r)
 	{
 		e.setInput(SCENARIO, m_name);
 		getSource(e, r);
@@ -86,7 +82,7 @@ public abstract class Scenario<T,U>
 	 * @param r A region describing the scenario
 	 * @return The source
 	 */
-	public abstract PullSource<T> getSource(MonitorExperiment<T,U> e, Region r);
+	public abstract PullSource<T> getSource(MonitorExperiment<T> e, Region r);
 
 	/**
 	 * Gets the monitor associated to this scenario
@@ -94,12 +90,12 @@ public abstract class Scenario<T,U>
 	 * @param r A region describing the scenario
 	 * @return The source
 	 */
-	public abstract Monitor<T,U> getMonitor(MonitorExperiment<T,U> e, Region r);
+	public abstract Monitor<T> getMonitor(MonitorExperiment<T> e, Region r);
 
 	@Override
 	public int hashCode()
 	{
-		return m_name.hashCode() + m_monitorName.hashCode();
+		return m_name.hashCode() + m_propertyName.hashCode();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -110,8 +106,8 @@ public abstract class Scenario<T,U>
 		{
 			return false;
 		}
-		Scenario<T,U> s = (Scenario<T,U>) o;
-		return m_name.compareTo(s.m_name) == 0 && m_monitorName.compareTo(s.m_monitorName) == 0
-				&& m_sourceName.compareTo(s.m_sourceName) == 0 && m_propertyName.compareTo(s.m_propertyName) == 0;
+		Scenario<T> s = (Scenario<T>) o;
+		return m_name.compareTo(s.m_name) == 0 && m_sourceName.compareTo(s.m_sourceName) == 0 
+				&& m_propertyName.compareTo(s.m_propertyName) == 0;
 	}
 }

@@ -26,22 +26,62 @@ import monitorlab.monitor.MonitorException;
 import monitorlab.source.PullSource;
 import monitorlab.source.SourceException;
 
-public class MonitorExperiment<T,U> extends Experiment
+public class MonitorExperiment<T> extends Experiment
 {
+	/**
+	 * Name of the parameter "Tool"
+	 */
 	public static transient final String TOOL = "Tool";
+	
+	/**
+	 * Name of the parameter "Time"
+	 */
 	public static transient final String TIME = "Time";
+	
+	/**
+	 * Name of the parameter "Length"
+	 */
 	public static transient final String LENGTH = "Length";
+	
+	/**
+	 * Name of the parameter "Trace length"
+	 */
 	public static transient final String TRACE_LENGTH = "Trace length";
+	
+	/**
+	 * Name of the parameter "Query"
+	 */
 	public static transient final String PROPERTY = "Query";
+	
+	/**
+	 * Name of the parameter "Memory"
+	 */
 	public static transient final String MEMORY = "Memory";
+	
+	/**
+	 * Name of the parameter "Memory per event"
+	 */
 	public static transient final String MEM_PER_EVENT = "Memory per event";
+	
+	/**
+	 * Name of the parameter "Throughput"
+	 */
 	public static transient final String THROUGHPUT = "Throughput";
+	
+	/**
+	 * Name of the parameter "Max memory"
+	 */
 	public static transient final String MAX_MEMORY = "Max memory";
+	
+	/**
+	 * Name of the parameter "Verdict"
+	 */
+	public static transient final String VERDICT = "Verdict";
 
 	/**
 	 * The monitor that is being used in this experiment
 	 */
-	protected transient Monitor<T,U> m_monitor;
+	protected transient Monitor<T> m_monitor;
 
 	/**
 	 * The source from which the input events will originate
@@ -77,6 +117,7 @@ public class MonitorExperiment<T,U> extends Experiment
 		describe(TRACE_LENGTH, "The total length of the trace processed");
 		describe(PROPERTY, "The name of the query being evaluated on the event log");
 		describe(MAX_MEMORY, "The maximum amount of memory consumed during the evaluation of the property (in bytes)");
+		describe(VERDICT, "The verdict produced by the monitor on this trace");
 		JsonList x = new JsonList();
 		x.add(0);
 		write(LENGTH, x);
@@ -98,7 +139,7 @@ public class MonitorExperiment<T,U> extends Experiment
 		{
 			while (m_source.hasNext())
 			{
-
+				event_count++;
 				T event = m_source.pull();
 				m_monitor.feed(event);
 				if (event_count % m_eventStep == 0 && event_count > 0)
@@ -111,8 +152,12 @@ public class MonitorExperiment<T,U> extends Experiment
 			long end = System.currentTimeMillis();
 	    write(THROUGHPUT, (1000f * (float) event_count) / ((float) (end - start)));
 	    write(MAX_MEMORY, max_mem);
-	    write(MEM_PER_EVENT, max_mem / event_count);
+	    if (event_count > 0)
+	    {
+	    	write(MEM_PER_EVENT, max_mem / event_count);
+	    }
 	    write(TRACE_LENGTH, event_count);
+	    write(VERDICT, m_monitor.getVerdict().toString());
 		}
 		catch (MonitorException e)
 		{
@@ -128,7 +173,7 @@ public class MonitorExperiment<T,U> extends Experiment
 	 * Sets the monitor that is being used in this experiment
 	 * @param m The monitor
 	 */
-	public void setMonitor(Monitor<T,U> m)
+	public void setMonitor(Monitor<T> m)
 	{
 		m_monitor = m;
 	}
