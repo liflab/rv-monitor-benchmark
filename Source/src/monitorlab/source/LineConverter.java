@@ -23,5 +23,4 @@ package monitorlab.source;
  */
 public interface LineConverter<T> extends EventConverter<String,T>
 {
-	
 }

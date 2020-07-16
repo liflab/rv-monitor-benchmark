@@ -82,4 +82,10 @@ public class InternalLineSource<T> extends LineSource<T>
 	{
 		m_scanner.close();
 	}
+	
+	@Override
+	public String getFilename()
+	{
+		return m_path;
+	}
 }

@@ -17,6 +17,7 @@
  */
 package monitorlab.source;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -93,5 +94,11 @@ public abstract class LineSource<T> implements PullSource<T>
 	public void close() throws SourceException
 	{
 		m_scanner.close();
+	}
+	
+	@Override
+	public void printEvent(T event, PrintStream ps)
+	{
+		ps.println(event);
 	}
 }

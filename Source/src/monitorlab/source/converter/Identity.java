@@ -42,4 +42,10 @@ public class Identity implements LineConverter<String>
 	{
 		return line;
 	}
+
+	@Override
+	public String getFilename(String input_filename)
+	{
+		return input_filename;
+	}
 }

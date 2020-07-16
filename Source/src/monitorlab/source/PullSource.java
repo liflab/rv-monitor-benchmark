@@ -17,6 +17,8 @@
  */
 package monitorlab.source;
 
+import java.io.PrintStream;
+
 public interface PullSource<T>
 {
 	/**
@@ -53,4 +55,17 @@ public interface PullSource<T>
 	 * @throws SourceException Thrown if the operation caused an error
 	 */
 	public void close() throws SourceException;
+
+	/**
+	 * Prints an event to a print stream.
+	 * @param event The event
+	 * @param ps The print stream to print the event to
+	 */
+	public void printEvent(T event, PrintStream ps);
+	
+	/**
+   * Gets the name of the file corresponding to this source.
+   * @return The filename
+   */
+  public String getFilename();
 }

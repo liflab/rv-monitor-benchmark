@@ -32,4 +32,12 @@ public interface EventConverter<T,U>
 	 * @throws SourceException If the conversion cannot proceed
 	 */
 	public U convert(T e) throws SourceException;
+	
+	/**
+	 * Gets the filename of the trace resulting from the conversion 
+	 * @param input_filename The original filename
+	 * @return The new filename
+	 */
+	public String getFilename(String input_filename);
+
 }

@@ -23,16 +23,19 @@ import monitorlab.source.LineConverter;
  * Converts a line of comma-separated values (CSV) into an array of strings.
  */
 public class CsvToArray implements LineConverter<Object[]>
-{
+{	
 	/**
-	 * Reference to a single public instance of the converter.
+	 * The prefix to add to the output filename to create the filename of the
+	 * converted trace
 	 */
-	public static final transient CsvToArray instance = new CsvToArray();
+	protected String m_prefix;
 	
 	/**
 	 * Creates a new instance of the converter
+	 * @param prefix The prefix to add to the output filename to create
+	 * the filename of the converted trace
 	 */
-	protected CsvToArray()
+	protected CsvToArray(String prefix)
 	{
 		super();
 	}
@@ -47,5 +50,11 @@ public class CsvToArray implements LineConverter<Object[]>
 			array[i] = parts[i];
 		}
 		return array;
+	}
+	
+	@Override
+	public String getFilename(String input_filename)
+	{
+		return m_prefix + "-" + input_filename;
 	}
 }

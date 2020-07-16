@@ -17,6 +17,8 @@
  */
 package monitorlab.scenario.iterator;
 
+import java.io.PrintStream;
+
 import ca.uqac.lif.synthia.Picker;
 import ca.uqac.lif.synthia.util.ElementPicker;
 import monitorlab.source.GeneratedSource;
@@ -56,5 +58,17 @@ public class IteratorRandomSource extends GeneratedSource<String>
 	protected String produceEvent()
 	{
 		return m_methodPicker.pick();
+	}
+
+	@Override
+	public void printEvent(String event, PrintStream ps)
+	{
+		ps.println(event);
+	}
+
+	@Override
+	public String getFilename()
+	{
+		return "hasnext";
 	}
 }

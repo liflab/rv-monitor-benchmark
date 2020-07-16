@@ -115,4 +115,9 @@ public class StringToAtom implements EventConverter<String,Event>
 		}
 	}
 
+	@Override
+	public String getFilename(String input_filename)
+	{
+		return "bb1-" + input_filename;
+	}
 }

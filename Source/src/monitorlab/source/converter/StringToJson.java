@@ -32,16 +32,19 @@ public class StringToJson implements LineConverter<JsonElement>
 	 * The parser used to create JSON elements.
 	 */
 	protected static final transient JsonParser s_parser = new JsonParser();
-	
+
 	/**
-	 * Reference to a single public instance of the converter.
+	 * The prefix to add to the output filename to create the filename of the
+	 * converted trace.
 	 */
-	public static final transient StringToJson instance = new StringToJson();
+	protected String m_prefix;
 	
 	/**
 	 * Creates a new instance of the converter
+	 * @param prefix The prefix to add to the output filename to create
+	 * the filename of the converted trace
 	 */
-	protected StringToJson()
+	protected StringToJson(String prefix)
 	{
 		super();
 	}
@@ -57,5 +60,11 @@ public class StringToJson implements LineConverter<JsonElement>
 		{
 			throw new SourceException(e);
 		}
+	}
+
+	@Override
+	public String getFilename(String input_filename)
+	{
+		return m_prefix + "-" + input_filename;
 	}
 }

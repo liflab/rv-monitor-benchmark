@@ -20,6 +20,7 @@ package monitorlab.source;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -93,5 +94,17 @@ public class FileLineSource<T> extends LineSource<T>
 	public void close() throws SourceException
 	{
 		m_scanner.close();
+	}
+
+	@Override
+	public void printEvent(T event, PrintStream ps)
+	{
+		ps.println(event);
+	}
+
+	@Override
+	public String getFilename()
+	{
+		return m_path;
 	}
 }
