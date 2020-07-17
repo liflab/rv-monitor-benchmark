@@ -20,16 +20,28 @@ package monitorlab;
 import monitorlab.monitor.ForeignMonitorExperiment;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.NativeMonitorExperiment;
-import monitorlab.monitor.dummy.DummyForeignMonitor;
-import monitorlab.monitor.monpoly.MonPolyMonitor;
+import monitorlab.monitor.beepbeep1.BeepBeep1Monitor;
+import monitorlab.monitor.beepbeep3.BeepBeep3Monitor;
+import monitorlab.monitor.dummy.DummyNativeMonitor;
 
+/**
+ * A helper class that produces the proper instance of {@link MonitorExperiment},
+ * depending on whether the monitor is a {@link NativeMonitor} or a
+ * {@link ForeignMonitor}.
+ * @author Sylvain Hallé
+ *
+ * @param <T> The type of events accepted by the monitor
+ */
 public class MonitorInventory<T>
 {
 	/**
-	 * The names of the tools that are foreign monitors
+	 * The names of the tools that are native monitors. 
+	 * <strong>Caveat:</strong> you must hard-code the
+	 * names into this array; if you create a new native monitor class, make sure
+	 * to add it here! 
 	 */
-	protected static transient String[] FOREIGN_MONITORS = new String[] {
-			DummyForeignMonitor.TOOL_NAME, MonPolyMonitor.TOOL_NAME
+	protected static transient String[] NATIVE_MONITORS = new String[] {
+			DummyNativeMonitor.TOOL_NAME, BeepBeep1Monitor.TOOL_NAME, BeepBeep3Monitor.TOOL_NAME
 	}; 
 	
 	/**
@@ -44,13 +56,13 @@ public class MonitorInventory<T>
 		{
 			return null;
 		}
-		for (String tool : FOREIGN_MONITORS)
+		for (String tool : NATIVE_MONITORS)
 		{
 			if (tool_name.compareTo(tool) == 0)
 			{
-				return new ForeignMonitorExperiment<T>();
+				return new NativeMonitorExperiment<T>();
 			}
 		}
-		return new NativeMonitorExperiment<T>();
+		return new ForeignMonitorExperiment<T>();
 	}
 }

@@ -6,7 +6,27 @@ A benchmark comparing runtime monitors
 | Version:     | 1.0                  |
 | Date:        | 2000 B.C.            |
 
-Write here a quick description of your set of experiments.
+This lab compares various runtime monitors on event traces.
+
+### Monitors included
+
+The lab directly includes as Java classes the following monitors:
+
+- [BeepBeep 1.7.8](https://beepbeep.sourceforge.net/), a monitor for
+  LTL-FO+ formulas on XML events.
+- [BeepBeep 3 (v0.10.3)](https://liflab.github.io/beepbeep-3), a
+  general-purpose event stream processing library and the successor to
+  BeepBeep 1.
+
+### Monitors to include manually
+
+The lab also contains experiments using other tools, but which must be installed
+on the host system manually.
+
+- [MonPoly](https://infsec.ethz.ch/research/software/monpoly.html). Download
+  the sources and compile following the instructions. For the MonPoly experiments
+  to work, an executable named `monpoly` must be in the system's path. The lab
+  was tested with version 1.1.9 of the tool.
 
 Instructions on using this archive
 ----------------------------------
@@ -80,7 +100,7 @@ LabPal's functionalities.
 Disclaimer
 ----------
 
-The LabPal *library* was written by Sylvain Hallé, Associate Professor at
+The LabPal *library* was written by Sylvain Hallé, Full Professor at
 Université du Québec à Chicoutimi, Canada. However, the *experiments* contained 
 in this specific lab instance and the results they produce are the sole
 responsibility of their author.
