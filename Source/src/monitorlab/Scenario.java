@@ -77,8 +77,8 @@ public abstract class Scenario<T>
 			return null;
 		}
 		e.setInput(SCENARIO, m_name);
-		getSource(e, r);
-		getMonitor(e, r);
+		PullSource<T> s = getSource(e, r);
+		getMonitor(e, s, r);
 		return e;
 	}
 	
@@ -103,10 +103,11 @@ public abstract class Scenario<T>
 	/**
 	 * Gets the monitor associated to this scenario
 	 * @param e The experiment
+	 * @param source The source given to the monitor
 	 * @param r A region describing the scenario
 	 * @return The source
 	 */
-	public abstract Monitor<T> getMonitor(MonitorExperiment<T> e, Region r);
+	public abstract Monitor<T> getMonitor(MonitorExperiment<T> e, PullSource<T> source, Region r);
 
 	@Override
 	public int hashCode()

@@ -47,6 +47,7 @@ public class StringToJson implements LineConverter<JsonElement>
 	protected StringToJson(String prefix)
 	{
 		super();
+		m_prefix = prefix;
 	}
 	
 	@Override

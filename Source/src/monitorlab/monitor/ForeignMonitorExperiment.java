@@ -18,7 +18,7 @@
 package monitorlab.monitor;
 
 import ca.uqac.lif.labpal.ExperimentException;
-import ca.uqac.lif.labpal.FileHelper;
+import monitorlab.source.SourceException;
 
 /**
  * A monitor experiment where the monitor is a non-native (i.e. "foreign")
@@ -34,41 +34,15 @@ public class ForeignMonitorExperiment<T> extends MonitorExperiment<T>
 	 * The monitor that is being used in this experiment
 	 */
 	protected transient ForeignMonitor<T> m_monitor;
-	
-	/**
-	 * The reference class of the experiment. The location of this class is used
-	 * as the root of all relative paths pointing to internal files.
-	 */
-	protected Class<? extends ForeignMonitorExperiment<?>> m_class;
-	
-	/**
-   * The name of the folder containing the R scripts <em>inside</em> the
-   * LabPal directory structure. Must end with a forward slash.
-   */
-  protected String m_scriptFolder = "scripts/";
-  
-  /**
-   * The name of the file containing the script <em>inside</em> the
-   * LabPal directory structure, that is used to run the monitor.
-   */
-  protected transient String m_scriptFilename;
-  
-  /**
-   * Arguments that must be passed to the script
-   */
-  /*@ null @*/ protected Object[] m_arguments = null;
-	
+
 	/**
 	 * Creates a new instance of foreign monitor experiment.
-	 * @param c The reference class of the experiment. The location of this class is used
-	 * as the root of all relative paths pointing to internal files.
 	 */
-	public ForeignMonitorExperiment(Class<? extends ForeignMonitorExperiment<?>> c)
+	public ForeignMonitorExperiment()
 	{
 		super();
-		m_class = c;
 	}
-	
+
 	@Override
 	public void setMonitor(Monitor<T> m) throws ExperimentException
 	{
@@ -78,21 +52,77 @@ public class ForeignMonitorExperiment<T> extends MonitorExperiment<T>
 		}
 		m_monitor = (ForeignMonitor<T>) m;
 	}
-	
+
 	@Override
 	public boolean prerequisitesFulfilled()
 	{
-		if (!FileHelper.fileExists(m_scriptFilename))
-    {
-      return false;
-    }
-    return super.prerequisitesFulfilled();
+		try
+		{
+			if (!m_monitor.isReady())
+			{
+				return false;
+			}
+		}
+		catch (MonitorException e)
+		{
+			return false;
+		}
+		return super.prerequisitesFulfilled();
+	}
+
+	@Override
+	public void fulfillPrerequisites() throws ExperimentException
+	{
+		try
+		{
+			m_monitor.prepare();
+		}
+		catch (MonitorException e)
+		{
+			throw new ExperimentException(e);
+		}
 	}
 
 	@Override
 	public void execute() throws ExperimentException, InterruptedException
 	{
-		// TODO Auto-generated method stub
-		
+		long max_mem = 0;
+		long start = System.currentTimeMillis();
+		try
+		{
+			int event_count = m_source.getLength();
+			m_monitor.run();
+			long end = System.currentTimeMillis();
+			write(THROUGHPUT, (1000f * (float) event_count) / ((float) (end - start)));
+			write(MAX_MEMORY, m_monitor.getMemory());
+			if (event_count > 0)
+			{
+				write(MEM_PER_EVENT, max_mem / event_count);
+			}
+			write(TOTAL_TIME, end - start);
+			write(TRACE_LENGTH, event_count);
+			write(VERDICT, m_monitor.getVerdict().toString());
+		}
+		catch (MonitorException e)
+		{
+			throw new ExperimentException(e);
+		}
+		catch (SourceException e)
+		{
+			throw new ExperimentException(e);
+		}
+	}
+	
+	@Override
+	public void cleanPrerequisites()
+	{
+		try
+		{
+			m_monitor.cleanup();
+		}
+		catch (MonitorException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

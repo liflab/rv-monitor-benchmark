@@ -29,17 +29,17 @@ import monitorlab.monitor.NativeMonitor;
  *
  * @param <T> The type of the input events
  */
-public class DummyMonitor<T> implements NativeMonitor<T>
+public class DummyNativeMonitor<T> implements NativeMonitor<T>
 {
 	/**
 	 * The name of the underlying tool for this monitor
 	 */
-	public static final transient String TOOL_NAME = "Dummy";
+	public static final transient String TOOL_NAME = "Dummy (native)";
 
 	/**
 	 * Creates a new instance of dummy monitor
 	 */
-	public DummyMonitor()
+	public DummyNativeMonitor()
 	{
 		super();
 	}

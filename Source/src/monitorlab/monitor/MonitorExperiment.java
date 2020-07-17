@@ -41,6 +41,11 @@ public abstract class MonitorExperiment<T> extends Experiment
 	 * Name of the parameter "Time"
 	 */
 	public static transient final String TIME = "Time";
+	
+	/**
+	 * Name of the parameter "Total time"
+	 */
+	public static transient final String TOTAL_TIME = "Total time";
 
 	/**
 	 * Name of the parameter "Length"
@@ -112,6 +117,7 @@ public abstract class MonitorExperiment<T> extends Experiment
 		super();
 		describe(THROUGHPUT, "The average number of events processed per second");
 		describe(TIME, "Cumulative running time (in ms)");
+		describe(TOTAL_TIME, "Global running time (in ms)");
 		describe(LENGTH, "Number of events processed");
 		describe(TRACE_LENGTH, "The total length of the trace processed");
 		describe(PROPERTY, "The name of the query being evaluated on the event log");

@@ -69,6 +69,6 @@ public class IteratorRandomSource extends GeneratedSource<String>
 	@Override
 	public String getFilename()
 	{
-		return "hasnext";
+		return "hasnext-random";
 	}
 }

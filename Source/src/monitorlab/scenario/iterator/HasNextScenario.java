@@ -20,16 +20,19 @@ package monitorlab.scenario.iterator;
 import ca.uqac.info.monitor.Event;
 import ca.uqac.lif.labpal.ExperimentException;
 import ca.uqac.lif.labpal.Region;
+import monitorlab.MonitorLab;
 import monitorlab.Scenario;
 import monitorlab.monitor.ConvertedMonitor;
 import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.beepbeep1.BeepBeep1Monitor;
 import monitorlab.monitor.beepbeep3.BeepBeep3Monitor;
-import monitorlab.monitor.dummy.DummyMonitor;
+import monitorlab.monitor.dummy.DummyForeignMonitor;
+import monitorlab.monitor.dummy.DummyNativeMonitor;
 import monitorlab.scenario.iterator.beepbeep1.HasNextMonitor;
 import monitorlab.scenario.iterator.beepbeep1.StringToAtom;
 import monitorlab.scenario.iterator.beepbeep3.HasNextProcessor;
+import monitorlab.source.PullSource;
 
 /**
  * On a stream of method names, checks the property that <tt>next</tt> is
@@ -37,13 +40,19 @@ import monitorlab.scenario.iterator.beepbeep3.HasNextProcessor;
  */
 public abstract class HasNextScenario extends Scenario<String>
 {
+	/**
+	 * Creates a new instance of the scenario
+	 * @param name
+	 * @param source_name
+	 * @param property_name
+	 */
 	public HasNextScenario(String name, String source_name, String property_name)
 	{
 		super(name, source_name, property_name);
 	}
 
 	@Override
-	public Monitor<String> getMonitor(MonitorExperiment<String> e, Region r)
+	public Monitor<String> getMonitor(MonitorExperiment<String> e, PullSource<String> source, Region r)
 	{
 		Monitor<String> monitor = null;
 		String tool_name = r.getString(MonitorExperiment.TOOL);
@@ -51,9 +60,16 @@ public abstract class HasNextScenario extends Scenario<String>
 		{
 			return null;
 		}
-		if (tool_name.compareTo(DummyMonitor.TOOL_NAME) == 0)
+		if (tool_name.compareTo(DummyNativeMonitor.TOOL_NAME) == 0)
 		{
-			monitor = new DummyMonitor<String>();
+			monitor = new DummyNativeMonitor<String>();
+		}
+		if (tool_name.compareTo(DummyForeignMonitor.TOOL_NAME) == 0)
+		{
+			DummyForeignMonitor dfm = new DummyForeignMonitor();
+			dfm.setExternalPath(MonitorLab.TRACE_PATH);
+			dfm.setSource(source);
+			monitor = dfm;
 		}
 		if (tool_name.compareTo(BeepBeep1Monitor.TOOL_NAME) == 0)
 		{

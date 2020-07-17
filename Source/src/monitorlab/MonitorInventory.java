@@ -17,8 +17,10 @@
  */
 package monitorlab;
 
+import monitorlab.monitor.ForeignMonitorExperiment;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.NativeMonitorExperiment;
+import monitorlab.monitor.dummy.DummyForeignMonitor;
 
 public class MonitorInventory<T>
 {
@@ -30,6 +32,14 @@ public class MonitorInventory<T>
 	 */
 	public MonitorExperiment<T> getExperiment(String tool_name)
 	{
+		if (tool_name == null || tool_name.isEmpty())
+		{
+			return null;
+		}
+		if (tool_name.compareTo(DummyForeignMonitor.TOOL_NAME) == 0)
+		{
+			return new ForeignMonitorExperiment<T>();
+		}
 		return new NativeMonitorExperiment<T>();
 	}
 }

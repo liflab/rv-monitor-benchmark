@@ -17,6 +17,7 @@
  */
 package monitorlab.source;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -86,6 +87,7 @@ public class InternalLineSource<T> extends LineSource<T>
 	@Override
 	public String getFilename()
 	{
-		return m_path;
+		File f = new File(m_path);
+		return f.getName();
 	}
 }

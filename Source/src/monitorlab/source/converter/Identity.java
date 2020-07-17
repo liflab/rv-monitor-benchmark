@@ -25,16 +25,20 @@ import monitorlab.source.LineConverter;
 public class Identity implements LineConverter<String>
 {
 	/**
-	 * Reference to a single public instance of the converter.
+	 * The prefix to add to the output filename to create the filename of the
+	 * converted trace
 	 */
-	public static final transient Identity instance = new Identity();
+	protected String m_prefix;
 	
 	/**
-	 * Creates a new instance of the converter
+	 * Creates a new instance of the converter.
+	 * @param prefix The prefix to add to the output filename to create the filename of the
+	 * converted trace
 	 */
-	protected Identity()
+	public Identity(String prefix)
 	{
 		super();
+		m_prefix = prefix;
 	}
 	
 	@Override

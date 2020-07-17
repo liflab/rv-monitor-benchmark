@@ -46,7 +46,7 @@ public class HasNextFile extends HasNextScenario
 	@Override
 	public PullSource<String> getSource(MonitorExperiment<String> e, Region r)
 	{
-		IteratorFileSource source = new IteratorFileSource(Identity.instance);
+		IteratorFileSource source = new IteratorFileSource(new Identity(""));
 		e.setSource(source);
 		return source;
 	}

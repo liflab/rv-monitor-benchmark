@@ -38,6 +38,7 @@ public class CsvToArray implements LineConverter<Object[]>
 	protected CsvToArray(String prefix)
 	{
 		super();
+		m_prefix = prefix;
 	}
 	
 	@Override

@@ -49,10 +49,11 @@ public interface ForeignMonitor<T> extends Monitor<T>
 	public void prepare() throws MonitorException;
 	
 	/**
-	 * Shuts down the monitor.
+	 * Cleans up the side effects resulting from the monitor's execution.
+	 * This typically amounts to deleting temporary files.
 	 * @throws MonitorException  If the operation could not be performed
 	 */
-	public void shutdown() throws MonitorException;
+	public void cleanup() throws MonitorException;
 	
 	/**
 	 * Runs the monitor. Once this method returns, the monitor is considered to

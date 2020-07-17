@@ -86,6 +86,7 @@ public class NativeMonitorExperiment<T> extends MonitorExperiment<T>
 			{
 				write(MEM_PER_EVENT, max_mem / event_count);
 			}
+			write(TOTAL_TIME, end - start);
 			write(TRACE_LENGTH, event_count);
 			write(VERDICT, m_monitor.getVerdict().toString());
 			m_source.close();
