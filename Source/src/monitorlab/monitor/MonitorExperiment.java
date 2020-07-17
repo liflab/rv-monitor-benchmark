@@ -21,12 +21,16 @@ import ca.uqac.lif.json.JsonList;
 import ca.uqac.lif.json.JsonNumber;
 import ca.uqac.lif.labpal.Experiment;
 import ca.uqac.lif.labpal.ExperimentException;
-import monitorlab.monitor.Monitor;
-import monitorlab.monitor.MonitorException;
 import monitorlab.source.PullSource;
-import monitorlab.source.SourceException;
 
-public class MonitorExperiment<T> extends Experiment
+/**
+ * An experiment that measures various parameters on the execution of a
+ * specific monitor on a scenario.
+ * @author Sylvain Hallé
+ *
+ * @param <T> The type of the events accepted by the monitor
+ */
+public abstract class MonitorExperiment<T> extends Experiment
 {
 	/**
 	 * Name of the parameter "Tool"
@@ -79,11 +83,6 @@ public class MonitorExperiment<T> extends Experiment
 	public static transient final String VERDICT = "Verdict";
 
 	/**
-	 * The monitor that is being used in this experiment
-	 */
-	protected transient Monitor<T> m_monitor;
-
-	/**
 	 * The source from which the input events will originate
 	 */
 	protected transient PullSource<T> m_source;
@@ -127,63 +126,6 @@ public class MonitorExperiment<T> extends Experiment
 		JsonList z = new JsonList();
 		z.add(0);
 		write(MEMORY, z);
-	}
-
-	@Override
-	public void execute() throws ExperimentException, InterruptedException 
-	{
-		long start = System.currentTimeMillis();
-		int event_count = 0;
-		long max_mem = 0;
-		try
-		{
-			int source_length = m_source.getLength();
-			m_source.open();
-			while (m_source.hasNext())
-			{
-				event_count++;
-				T event = m_source.pull();
-				m_monitor.feed(event);
-				if (event_count % m_eventStep == 0 && event_count > 0)
-				{
-					long mem = m_monitor.getMemory();
-					max_mem = Math.max(max_mem, mem);
-					addReading(event_count, System.currentTimeMillis() - start, mem);
-					if (source_length > 0)
-					{
-						float prog = ((float) event_count) / ((float) source_length);
-						setProgression(prog);
-					}
-				}
-			}
-			long end = System.currentTimeMillis();
-			write(THROUGHPUT, (1000f * (float) event_count) / ((float) (end - start)));
-			write(MAX_MEMORY, max_mem);
-			if (event_count > 0)
-			{
-				write(MEM_PER_EVENT, max_mem / event_count);
-			}
-			write(TRACE_LENGTH, event_count);
-			write(VERDICT, m_monitor.getVerdict().toString());
-			m_source.close();
-		}
-		catch (MonitorException e)
-		{
-			throw new ExperimentException(e);
-		}
-		catch (SourceException e)
-		{
-			throw new ExperimentException(e);
-		}
-	}
-
-	/**
-	 * Sets the monitor that is being used in this experiment
-	 * @param m The monitor
-	 */
-	public void setMonitor(Monitor<T> m)
-	{
-		m_monitor = m;
 	}
 
 	/**
@@ -241,4 +183,12 @@ public class MonitorExperiment<T> extends Experiment
 		write(TIME, l_time);
 		write(MEMORY, l_mem);
 	}
+
+	/**
+	 * Sets the native monitor that is being used in this experiment.
+	 * @param m The monitor
+	 * @throws ExperimentException If this type of monitor is not supported by
+	 * the experiment
+	 */
+	public abstract void setMonitor(Monitor<T> m) throws ExperimentException;
 }

@@ -18,6 +18,7 @@
 package monitorlab.scenario.iterator;
 
 import ca.uqac.info.monitor.Event;
+import ca.uqac.lif.labpal.ExperimentException;
 import ca.uqac.lif.labpal.Region;
 import monitorlab.Scenario;
 import monitorlab.monitor.ConvertedMonitor;
@@ -64,9 +65,16 @@ public abstract class HasNextScenario extends Scenario<String>
 		}
 		if (monitor != null)
 		{
-			e.setMonitor(monitor);
-			e.setInput(MonitorExperiment.TOOL, tool_name);
-			return monitor;
+			try
+			{
+				e.setMonitor(monitor);
+				e.setInput(MonitorExperiment.TOOL, tool_name);
+				return monitor;
+			}
+			catch (ExperimentException ex)
+			{
+				return null;
+			}
 		}
 		return null;
 	}

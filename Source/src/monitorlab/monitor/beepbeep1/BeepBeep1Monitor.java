@@ -23,14 +23,14 @@ import ca.uqac.lif.azrael.PrintException;
 import ca.uqac.lif.azrael.size.SizePrinter;
 import ca.uqac.lif.cep.ltl.Troolean;
 import ca.uqac.lif.cep.ltl.Troolean.Value;
-import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorException;
+import monitorlab.monitor.NativeMonitor;
 
 /**
  * A monitor using <a href="https://beepbeep.sourceforge.net/">BeepBeep 1</a>
  * to evaluate LTL-FO+ formulas.
  */
-public class BeepBeep1Monitor implements Monitor<Event>
+public class BeepBeep1Monitor implements NativeMonitor<Event>
 {
 	/**
 	 * The name of the underlying tool for this monitor

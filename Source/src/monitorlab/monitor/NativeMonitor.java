@@ -17,30 +17,19 @@
  */
 package monitorlab.monitor;
 
-import ca.uqac.lif.cep.ltl.Troolean;
-
 /**
- * Provides a uniform way of interacting with various monitors.
- * It is up to each concrete monitoring tool to implement a wrapper
- * that supports the methods defined in this interface.
+ * A monitor that is a native Java object that runs within the lab. Such a
+ * monitor can be fed events directly using {@link #feed(Object)}.
+ * @author Sylvain Hallé
  *
- * @param <T> The type of events consumed by the monitor
+ * @param <T> The type of the events accepted by the monitor
  */
-public interface Monitor<T> 
+public interface NativeMonitor<T> extends Monitor<T>
 {
 	/**
-	 * Gets the current verdict computed by the monitor on the stream
-	 * of events received so far.  
-	 * @return The verdict
+	 * Gives a new event to be processed by the monitor.
+	 * @param event The event
 	 * @throws MonitorException If the operation was unsuccessful
 	 */
-	public Troolean.Value getVerdict() throws MonitorException;
-	
-	/**
-	 * Gets the memory consumed by the monitor in its current state.
-	 * @return The memory used by the monitor (in bytes), or <tt>-1</tt> if
-	 * this value cannot be calculated
-	 * @throws MonitorException If the operation was unsuccessful
-	 */
-	public long getMemory() throws MonitorException;
+	public void feed(T event) throws MonitorException;
 }

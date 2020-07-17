@@ -28,15 +28,15 @@ import monitorlab.source.SourceException;
  * @param <T> The original input type of the monitor
  * @param <U> The input type of the converted monitor
  */
-public class ConvertedMonitor<T,U> implements Monitor<U>
+public class ConvertedMonitor<T,U> implements NativeMonitor<U>
 {
 	/**
 	 * The monitor to call
 	 */
-	protected Monitor<T> m_monitor;
+	protected NativeMonitor<T> m_monitor;
 	
 	/**
-	 * The converter used to convert envents to the input format of the monitor
+	 * The converter used to convert events to the input format of the monitor
 	 */
 	protected EventConverter<U,T> m_converter;
 	
@@ -46,7 +46,7 @@ public class ConvertedMonitor<T,U> implements Monitor<U>
 	 * @param converter The converter used to convert envents to the input format
 	 * of the monitor
 	 */
-	public ConvertedMonitor(Monitor<T> monitor, EventConverter<U,T> converter)
+	public ConvertedMonitor(NativeMonitor<T> monitor, EventConverter<U,T> converter)
 	{
 		super();
 		m_monitor = monitor;

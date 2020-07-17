@@ -18,8 +18,8 @@
 package monitorlab.monitor.dummy;
 
 import ca.uqac.lif.cep.ltl.Troolean.Value;
-import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorException;
+import monitorlab.monitor.NativeMonitor;
 
 /**
  * A "dummy" monitor that does not process events and always returns the
@@ -29,7 +29,7 @@ import monitorlab.monitor.MonitorException;
  *
  * @param <T> The type of the input events
  */
-public class DummyMonitor<T> implements Monitor<T>
+public class DummyMonitor<T> implements NativeMonitor<T>
 {
 	/**
 	 * The name of the underlying tool for this monitor

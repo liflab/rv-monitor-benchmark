@@ -35,41 +35,39 @@ public class MonitorExperimentFactory extends ExperimentFactory<MonitorLab,Monit
 	/**
 	 * A map associating each scenario to its name
 	 */
-  protected Map<String,Scenario> m_scenarios;
+	protected Map<String,Scenario> m_scenarios;
 
-  /**
-   * Creates a new instance of the factory
-   * @param lab The lab this factory is associated to. New instances of
-   * experiments will be added to this lab.
-   */
-  public MonitorExperimentFactory(MonitorLab lab)
-  {
-    super(lab, MonitorExperiment.class);
-    m_scenarios = new HashMap<String,Scenario>();
-  }
+	/**
+	 * Creates a new instance of the factory
+	 * @param lab The lab this factory is associated to. New instances of
+	 * experiments will be added to this lab.
+	 */
+	public MonitorExperimentFactory(MonitorLab lab)
+	{
+		super(lab, MonitorExperiment.class);
+		m_scenarios = new HashMap<String,Scenario>();
+	}
 
-  public MonitorExperimentFactory addScenario(String name, Scenario s)
-  {
-    m_scenarios.put(name, s);
-    return this;
-  }
+	public MonitorExperimentFactory addScenario(String name, Scenario s)
+	{
+		m_scenarios.put(name, s);
+		return this;
+	}
 
-  @SuppressWarnings("unchecked")
 	@Override
-  protected MonitorExperiment createExperiment(Region r)
-  {
-    String scenario_s = r.getString(SCENARIO);
-    if (!m_scenarios.containsKey(scenario_s))
-    {
-      return null;
-    }
-    Scenario scenario = m_scenarios.get(scenario_s);
-    if (scenario == null)
-    {
-      return null;
-    }
-    MonitorExperiment exp = new MonitorExperiment();
-    scenario.setup(exp, r);
-    return exp;
-  }
+	protected MonitorExperiment createExperiment(Region r)
+	{
+		String scenario_s = r.getString(SCENARIO);
+		if (!m_scenarios.containsKey(scenario_s))
+		{
+			return null;
+		}
+		Scenario scenario = m_scenarios.get(scenario_s);
+		if (scenario == null)
+		{
+			return null;
+		}
+		MonitorExperiment exp = scenario.setup(r);
+		return exp;
+	}
 }

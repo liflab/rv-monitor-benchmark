@@ -24,8 +24,8 @@ import ca.uqac.lif.cep.Processor;
 import ca.uqac.lif.cep.Pushable;
 import ca.uqac.lif.cep.ltl.Troolean;
 import ca.uqac.lif.cep.tmf.SinkLast;
-import monitorlab.monitor.Monitor;
 import monitorlab.monitor.MonitorException;
+import monitorlab.monitor.NativeMonitor;
 
 /**
  * A monitor using <a href="https://liflab.github.io/beepbeep-3">BeepBeep 3</a>
@@ -33,7 +33,7 @@ import monitorlab.monitor.MonitorException;
  *
  * @param <T> The type of the input events
  */
-public class BeepBeep3Monitor<T> implements Monitor<T>
+public class BeepBeep3Monitor<T> implements NativeMonitor<T>
 {
 	/**
 	 * The name of the underlying tool for this monitor

@@ -66,14 +66,30 @@ public abstract class Scenario<T>
 	/**
 	 * Makes the initial setup of an experiment based on the current
 	 * scenario.
-	 * @param e The experiment
 	 * @param r A region describing the scenario
+	 * @return The experiment
 	 */
-	public void setup(MonitorExperiment<T> e, Region r)
+	public MonitorExperiment<T> setup(Region r)
 	{
+		MonitorExperiment<T> e = getExperiment(r);
+		if (e == null)
+		{
+			return null;
+		}
 		e.setInput(SCENARIO, m_name);
 		getSource(e, r);
 		getMonitor(e, r);
+		return e;
+	}
+	
+	/**
+	 * Gets the proper instance of monitor experiments for the given region.
+	 * @param r A region describing the scenario
+	 * @return The experiment instance
+	 */
+	public MonitorExperiment<T> getExperiment(Region r)
+	{
+		return new MonitorInventory<T>().getExperiment(r.getString(MonitorExperiment.TOOL));
 	}
 
 	/**
