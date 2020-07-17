@@ -39,5 +39,12 @@ public interface EventConverter<T,U>
 	 * @return The new filename
 	 */
 	public String getFilename(String input_filename);
+	
+	/**
+	 * Gets the extension typically given to files containing events of
+	 * type <tt>U</tt>.
+	 * @return The extension
+	 */
+	public String getExtension();
 
 }

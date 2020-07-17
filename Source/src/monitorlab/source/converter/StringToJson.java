@@ -68,4 +68,10 @@ public class StringToJson implements LineConverter<JsonElement>
 	{
 		return m_prefix + "-" + input_filename;
 	}
+	
+	@Override
+	public String getExtension()
+	{
+		return "json";
+	}
 }

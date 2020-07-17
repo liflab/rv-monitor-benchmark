@@ -20,7 +20,6 @@ package monitorlab.scenario.iterator;
 import ca.uqac.info.monitor.Event;
 import ca.uqac.lif.labpal.ExperimentException;
 import ca.uqac.lif.labpal.Region;
-import monitorlab.MonitorLab;
 import monitorlab.Scenario;
 import monitorlab.monitor.ConvertedMonitor;
 import monitorlab.monitor.Monitor;
@@ -29,9 +28,11 @@ import monitorlab.monitor.beepbeep1.BeepBeep1Monitor;
 import monitorlab.monitor.beepbeep3.BeepBeep3Monitor;
 import monitorlab.monitor.dummy.DummyForeignMonitor;
 import monitorlab.monitor.dummy.DummyNativeMonitor;
+import monitorlab.monitor.monpoly.MonPolyMonitor;
 import monitorlab.scenario.iterator.beepbeep1.HasNextMonitor;
 import monitorlab.scenario.iterator.beepbeep1.StringToAtom;
 import monitorlab.scenario.iterator.beepbeep3.HasNextProcessor;
+import monitorlab.scenario.iterator.monpoly.MonPolyHasNextMonitor;
 import monitorlab.source.PullSource;
 
 /**
@@ -66,10 +67,15 @@ public abstract class HasNextScenario extends Scenario<String>
 		}
 		if (tool_name.compareTo(DummyForeignMonitor.TOOL_NAME) == 0)
 		{
-			DummyForeignMonitor dfm = new DummyForeignMonitor();
-			dfm.setExternalPath(MonitorLab.TRACE_PATH);
-			dfm.setSource(source);
-			monitor = dfm;
+			DummyForeignMonitor mon = new DummyForeignMonitor();
+			mon.setSource(source);
+			monitor = mon;
+		}
+		if (tool_name.compareTo(MonPolyMonitor.TOOL_NAME) == 0)
+		{
+			MonPolyHasNextMonitor mon = new MonPolyHasNextMonitor();
+			mon.setSource(source);
+			monitor = mon;
 		}
 		if (tool_name.compareTo(BeepBeep1Monitor.TOOL_NAME) == 0)
 		{

@@ -33,6 +33,7 @@ import monitorlab.monitor.beepbeep1.BeepBeep1Monitor;
 import monitorlab.monitor.beepbeep3.BeepBeep3Monitor;
 import monitorlab.monitor.dummy.DummyForeignMonitor;
 import monitorlab.monitor.dummy.DummyNativeMonitor;
+import monitorlab.monitor.monpoly.MonPolyMonitor;
 import monitorlab.scenario.iterator.HasNextFile;
 import monitorlab.scenario.iterator.HasNextRandom;
 
@@ -102,7 +103,7 @@ public class MonitorLab extends Laboratory
 		Region big_r = new Region();
 		big_r.add(SCENARIO, HasNextFile.NAME, HasNextRandom.NAME);
 		big_r.add(TOOL, DummyNativeMonitor.TOOL_NAME, DummyForeignMonitor.TOOL_NAME, 
-				BeepBeep1Monitor.TOOL_NAME, BeepBeep3Monitor.TOOL_NAME);
+				BeepBeep1Monitor.TOOL_NAME, BeepBeep3Monitor.TOOL_NAME, MonPolyMonitor.TOOL_NAME);
 
 		// Comparison of all tools on all scenarios
 		{
@@ -166,6 +167,25 @@ public class MonitorLab extends Laboratory
 			}
 		}
 	}
+	
+	@Override
+  public String isEnvironmentOk()
+  {
+		StringBuilder list  = new StringBuilder();
+		{
+			String s = MonPolyMonitor.checkEnvironment();
+			if (s != null)
+			{
+				list.append("<li>").append(s).append("</li>\n");
+			}
+		}
+		String s_list = list.toString();
+		if (s_list.isEmpty())
+		{
+			return null;
+		}
+		return "<ul>\n" + s_list + "</ul>\n";
+  }
 
 	/**
 	 * The main loop of the laboratory

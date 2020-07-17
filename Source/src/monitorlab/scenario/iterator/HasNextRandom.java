@@ -20,7 +20,12 @@ package monitorlab.scenario.iterator;
 import ca.uqac.lif.labpal.Region;
 import ca.uqac.lif.synthia.Picker;
 import monitorlab.monitor.MonitorExperiment;
+import monitorlab.monitor.monpoly.MonPolyMonitor;
+import monitorlab.monitor.monpoly.AtomToMonPolyEvent;
+import monitorlab.source.ConvertedSource;
 import monitorlab.source.PullSource;
+
+import static monitorlab.monitor.MonitorExperiment.TOOL;
 
 /**
  * On a stream of method names, checks the property that <tt>next</tt> is
@@ -52,7 +57,12 @@ public class HasNextRandom extends HasNextScenario
 	@Override
 	public PullSource<String> getSource(MonitorExperiment<String> e, Region r)
 	{
-		IteratorRandomSource source = new IteratorRandomSource(m_floatSource, 10000);
+		PullSource<String> source = new IteratorRandomSource(m_floatSource, 10000);
+		String tool_name = r.getString(TOOL);
+		if (tool_name.compareTo(MonPolyMonitor.TOOL_NAME) == 0)
+		{
+			source = new ConvertedSource<String,String>(new AtomToMonPolyEvent("next", "hasNext"), source, "");
+		}
 		e.setSource(source);
 		return source;
 	}

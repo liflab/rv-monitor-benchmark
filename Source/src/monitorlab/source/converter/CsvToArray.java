@@ -58,4 +58,10 @@ public class CsvToArray implements LineConverter<Object[]>
 	{
 		return m_prefix + "-" + input_filename;
 	}
+	
+	@Override
+	public String getExtension()
+	{
+		return "csv";
+	}
 }

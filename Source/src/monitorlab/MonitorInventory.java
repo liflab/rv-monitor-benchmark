@@ -21,9 +21,17 @@ import monitorlab.monitor.ForeignMonitorExperiment;
 import monitorlab.monitor.MonitorExperiment;
 import monitorlab.monitor.NativeMonitorExperiment;
 import monitorlab.monitor.dummy.DummyForeignMonitor;
+import monitorlab.monitor.monpoly.MonPolyMonitor;
 
 public class MonitorInventory<T>
 {
+	/**
+	 * The names of the tools that are foreign monitors
+	 */
+	protected static transient String[] FOREIGN_MONITORS = new String[] {
+			DummyForeignMonitor.TOOL_NAME, MonPolyMonitor.TOOL_NAME
+	}; 
+	
 	/**
 	 * Gets an instance of either {@link NativeMonitorExperiment} or
 	 * {@link ForeignMonitorExperiment} depending on the name of the tool.
@@ -36,9 +44,12 @@ public class MonitorInventory<T>
 		{
 			return null;
 		}
-		if (tool_name.compareTo(DummyForeignMonitor.TOOL_NAME) == 0)
+		for (String tool : FOREIGN_MONITORS)
 		{
-			return new ForeignMonitorExperiment<T>();
+			if (tool_name.compareTo(tool) == 0)
+			{
+				return new ForeignMonitorExperiment<T>();
+			}
 		}
 		return new NativeMonitorExperiment<T>();
 	}

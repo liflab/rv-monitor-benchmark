@@ -17,8 +17,13 @@
  */
 package monitorlab.scenario.iterator;
 
+import static monitorlab.monitor.MonitorExperiment.TOOL;
+
 import ca.uqac.lif.labpal.Region;
 import monitorlab.monitor.MonitorExperiment;
+import monitorlab.monitor.monpoly.AtomToMonPolyEvent;
+import monitorlab.monitor.monpoly.MonPolyMonitor;
+import monitorlab.source.ConvertedSource;
 import monitorlab.source.PullSource;
 import monitorlab.source.converter.Identity;
 
@@ -46,7 +51,12 @@ public class HasNextFile extends HasNextScenario
 	@Override
 	public PullSource<String> getSource(MonitorExperiment<String> e, Region r)
 	{
-		IteratorFileSource source = new IteratorFileSource(new Identity(""));
+		PullSource<String> source = new IteratorFileSource(new Identity(""));
+		String tool_name = r.getString(TOOL);
+		if (tool_name.compareTo(MonPolyMonitor.TOOL_NAME) == 0)
+		{
+			source = new ConvertedSource<String,String>(new AtomToMonPolyEvent("next", "hasNext"), source, "");
+		}
 		e.setSource(source);
 		return source;
 	}

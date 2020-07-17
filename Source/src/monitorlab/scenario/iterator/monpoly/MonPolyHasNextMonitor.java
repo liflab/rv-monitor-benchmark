@@ -15,47 +15,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monitorlab.source.converter;
+package monitorlab.scenario.iterator.monpoly;
 
-import monitorlab.source.LineConverter;
+import java.io.PrintStream;
 
-/**
- * Converts a line of text into itself.
- */
-public class Identity implements LineConverter<String>
+import monitorlab.monitor.monpoly.MonPolyMonitor;
+
+public class MonPolyHasNextMonitor extends MonPolyMonitor
 {
-	/**
-	 * The prefix to add to the output filename to create the filename of the
-	 * converted trace
-	 */
-	protected String m_prefix;
-	
-	/**
-	 * Creates a new instance of the converter.
-	 * @param prefix The prefix to add to the output filename to create the filename of the
-	 * converted trace
-	 */
-	public Identity(String prefix)
+	public MonPolyHasNextMonitor()
 	{
-		super();
-		m_prefix = prefix;
-	}
-	
-	@Override
-	public String convert(String line)
-	{
-		return line;
+		super("hasnext.sig", "hasnext.mfotl");
 	}
 
 	@Override
-	public String getFilename(String input_filename)
+	public void writeSignature(PrintStream ps)
 	{
-		return input_filename;
+		ps.println("next()");
+		ps.println("hasNext()");
 	}
-	
+
 	@Override
-	public String getExtension()
+	public void writeProperty(PrintStream ps)
 	{
-		return null;
+		ps.println("next() IMPLIES (NEXT [1,1] hasNext())");
 	}
 }

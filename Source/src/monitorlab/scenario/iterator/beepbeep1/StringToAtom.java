@@ -25,6 +25,7 @@ import java.util.Set;
 import ca.uqac.info.ltl.Constant;
 import ca.uqac.info.monitor.Event;
 import ca.uqac.info.simplexpath.SimpleXPathExpression;
+import monitorlab.source.ConvertedSource;
 import monitorlab.source.EventConverter;
 import monitorlab.source.SourceException;
 
@@ -118,6 +119,12 @@ public class StringToAtom implements EventConverter<String,Event>
 	@Override
 	public String getFilename(String input_filename)
 	{
-		return "bb1-" + input_filename;
+		return ConvertedSource.replaceExtension("bb1-" + input_filename, getExtension());
+	}
+
+	@Override
+	public String getExtension()
+	{
+		return "txt";
 	}
 }
